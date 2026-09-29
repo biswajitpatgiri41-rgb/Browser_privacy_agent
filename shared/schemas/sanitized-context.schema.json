@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://privacy-vision-browser-agent/schemas/sanitized-context.schema.json",
+  "title": "SanitizedContext",
+  "type": "object",
+  "required": ["version", "request_id", "session_id", "url", "elements", "viewport", "privacy"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Protocol version"
+    },
+    "request_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique request identifier"
+    },
+    "session_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Session identifier"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Current page URL (sanitized, no query params with secrets)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Page title (sanitized)",
+      "maxLength": 200
+    },
+    "elements": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "required": ["element_id", "tag", "role", "bbox", "safe_label"],
+        "properties": {
+          "element_id": {
+            "type": "string",
+            "pattern": "^el_[a-zA-Z0-9]{8,}$",
+            "description": "Anonymous element identifier"
+          },
+          "tag": {
+            "type": "string",
+            "enum": ["button", "input", "select", "textarea", "a", "div", "span", "form", "img", "iframe", "table", "other"],
+            "description": "HTML tag name"
+          },
+          "role": {
+            "type": "string",
+            "description": "ARIA role"
+          },
+          "bbox": {
+            "type": "object",
+            "required": ["x", "y", "width", "height"],
+            "properties": {
+              "x": { "type": "number", "minimum": 0 },
+              "y": { "type": "number", "minimum": 0 },
+              "width": { "type": "number", "minimum": 0 },
+              "height": { "type": "number", "minimum": 0 }
+            },
+            "description": "Bounding box in viewport coordinates"
+          },
+          "safe_label": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Sanitized accessible label"
+          },
+          "input_type": {
+            "type": "string",
+            "enum": ["text", "password", "email", "tel", "search", "url", "number", "date", "checkbox", "radio", "submit", "button", "hidden", "file", "other"],
+            "description": "Input type for form elements"
+          },
+          "is_interactive": {
+            "type": "boolean",
+            "description": "Whether element is actionable"
+          },
+          "is_visible": {
+            "type": "boolean",
+            "description": "Whether element is visible"
+          },
+          "attributes": {
+            "type": "object",
+            "description": "Sanitized safe attributes only",
+            "additionalProperties": { "type": "string" },
+            "maxProperties": 10
+          },
+          "pii_regions": {
+            "type": "array",
+            "items": { "$ref": "pii-region.schema.json" },
+            "description": "PII regions within this element"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "viewport": {
+      "type": "object",
+      "required": ["width", "height", "device_pixel_ratio"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "device_pixel_ratio": { "type": "number", "minimum": 0.5, "maximum": 4 }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "required": ["verified", "pii_detected", "redaction_applied", "token_map"],
+      "properties": {
+        "verified": {
+          "type": "boolean",
+          "description": "Must be true for request to be accepted"
+        },
+        "pii_detected": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of PII instances detected"
+        },
+        "redaction_applied": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of redactions applied"
+        },
+        "token_map": {
+          "type": "object",
+          "description": "Mapping of token type to count",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "ocr_regions": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "required": ["region_id", "bbox", "tokenized_text"],
+        "properties": {
+          "region_id": { "type": "string", "pattern": "^ocr_[a-zA-Z0-9]{8,}$" },
+          "bbox": {
+            "type": "object",
+            "required": ["x", "y", "width", "height"],
+            "properties": {
+              "x": { "type": "number" },
+              "y": { "type": "number" },
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            }
+          },
+          "tokenized_text": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "OCR text with PII replaced by tokens"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

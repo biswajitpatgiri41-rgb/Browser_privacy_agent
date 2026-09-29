@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://privacy-vision-browser-agent/schemas/pii-region.schema.json",
+  "title": "PIIRegion",
+  "type": "object",
+  "required": ["region_id", "type", "bbox", "token"],
+  "properties": {
+    "region_id": {
+      "type": "string",
+      "pattern": "^pii_[a-zA-Z0-9]{8,}$",
+      "description": "Unique PII region identifier"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["EMAIL", "PASSWORD", "PERSON", "PHONE", "ADDRESS", "SECRET", "CREDIT_CARD", "SSN", "API_KEY", "TOKEN", "FACE_REGION", "OTHER"],
+      "description": "PII type token"
+    },
+    "bbox": {
+      "type": "object",
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0 },
+        "y": { "type": "number", "minimum": 0 },
+        "width": { "type": "number", "minimum": 0 },
+        "height": { "type": "number", "minimum": 0 }
+      },
+      "description": "Bounding box relative to element or viewport"
+    },
+    "token": {
+      "type": "string",
+      "pattern": "^\\[[A-Z_]+\\]$",
+      "description": "Replacement token, e.g., [EMAIL]"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Detection confidence"
+    }
+  },
+  "additionalProperties": false
+}

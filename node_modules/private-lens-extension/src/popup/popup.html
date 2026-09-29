@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Lens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <a href="#" class="brand" aria-label="Private Lens Home">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div><strong>Private Lens</strong><small>Privacy-First Browser Agent</small></div>
+      </a>
+      <div class="topbar-right">
+        <span class="privacy-badge" id="privacy-badge">PRIVACY ON</span>
+        <button class="icon-button" id="settings-btn" aria-label="Settings" title="Settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Agent Section -->
+    <section class="agent-section" aria-labelledby="agent-title">
+      <div class="section-title-row"><h2 id="agent-title">Agent Controls</h2></div>
+      <div class="task-input-wrapper"><textarea class="task-input" id="task-input" placeholder="Describe your task... " aria-label="Task Description"></textarea></div>
+      <div class="task-examples">
+        <span class="examples-label">Examples:</span>
+        <button class="example-chip" data-task="Find the cheapest flight from NYC to LAX next Tuesday">Flight search</button>
+        <button class="example-chip" data-task="Book a table for 2 at an Italian restaurant nearby for 7pm tonight">Restaurant booking</button>
+        <button class="example-chip" data-task="Search for 'privacy browser extension' on GitHub and star the top 3 results">GitHub search</button>
+        <button class="example-chip" data-task="Compare prices for iPhone 15 Pro across Amazon, Best Buy, and Apple Store">Price comparison</button>
+      </div>
+      <div class="agent-controls">
+        <button class="btn btn-primary" id="run-btn" disabled><svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>Run Agent</button>
+        <button class="btn btn-danger" id="stop-btn" disabled><svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>Stop</button>
+      </div>
+      <div class="status-bar">
+        <div class="status-main"><div class="status-indicator" id="status-indicator" data-state="ready" aria-live="polite"></div><span class="status-text" id="status-text">Ready</span></div>
+        <div class="step-counter" id="step-counter"><span class="step-current">0</span><span class="step-separator">/</span><span class="step-max">0</span></div>
+      </div>
+      <div class="planner-badge" id="planner-badge">INV PLANNER</div>
+    </section>
+    <!-- Workflow Visualization -->
+    <section class="workflow-section" aria-labelledby="workflow-title">
+      <div class="section-title-row"><h2 id="workflow-title">Workflow</h2><div class="flow-legend" aria-label="Stage status legend"><span class="legend-item"><span class="legend-dot idle"></span>Idle</span><span class="legend-item"><span class="legend-dot running"></span>Running</span><span class="legend-item"><span class="legend-dot success"></span>Done</span><span class="legend-item"><span class="legend-dot error"></span>Error</span></div></div>
+      <div class="workflow-container" id="workflow-container">
+        <div class="workflow-canvas" aria-hidden="true"><svg class="workflow-svg" viewBox="0 0 4 100" preserveAspectRatio="none"><defs><marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 Z" fill="var(--border-primary)"/></marker></defs><path class="workflow-path" d="M2,0 L2,100" stroke="var(--border-primary)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/></svg></div>
+        <div class="workflow-nodes" id="workflow-nodes" role="list" aria-label="Workflow stages"></div>
+      </div>
+    </section>
+
+    <!-- Stage Detail -->
+    <section class="stage-section" aria-labelledby="stage-title"><div class="section-title-row"><h2 id="stage-title">Current Stage</h2></div><div class="stage-content" id="stage-content" aria-live="polite"><div class="stage-placeholder">Waiting for task...</div></div></section>
+
+    <!-- Action Detail -->
+    <section class="action-section" aria-labelledby="action-title"><div class="section-title-row"><h2 id="action-title">Current Action</h2></div><div class="action-content" id="action-content" aria-live="polite"><div class="action-placeholder">No action yet</div></div></section>
+    <!-- Privacy Monitor -->
+    <section class="privacy-section" aria-labelledby="privacy-title"><div class="section-title-row"><h2 id="privacy-title">Privacy Monitor</h2></div><div class="privacy-content" id="privacy-content" aria-live="polite">
+      <div class="protection-status"><span class="status-dot protected"></span><span>Protected</span></div>
+      <div class="privacy-metrics"><div class="metric-item"><div class="metric-value">0</div><div class="metric-label">PII Types</div></div><div class="metric-divider"></div><div class="metric-item"><div class="metric-value">0</div><div class="metric-label">Tokens</div></div><div class="metric-divider"></div><div class="metric-item"><div class="metric-value">0ms</div><div class="metric-label">Latency</div></div></div>
+      <div class="pii-categories"><span class="pii-none">No PII detected</span></div>
+      <button class="btn btn-secondary debug-toggle" id="debug-toggle" aria-expanded="false"><span>Debug Data</span><span class="btn-chevron">v</span></button>
+      <div class="debug-panel" id="debug-panel" hidden><div class="debug-header"><h3>Sanitized Context</h3><span class="debug-badge">READ ONLY</span></div><p class="debug-subtitle">This is the exact data sent to the planner. PII has been tokenized.</p><pre class="json-display" id="json-display">No debug data available</pre></div>
+    </div></section>
+
+    <!-- Activity Log -->
+    <section class="activity-section" aria-labelledby="activity-title"><div class="section-title-row"><h2 id="activity-title">Activity Log</h2></div><ul class="activity-list" id="activity-list" aria-live="polite" aria-label="Agent activity log"><li class="activity-item info"><span class="activity-time">--:--</span><span class="activity-message">No activity yet</span></li></ul></section>
+    <!-- Metrics Grid -->
+    <section class="metrics-section" aria-labelledby="metrics-title"><div class="section-title-row"><h2 id="metrics-title">Metrics</h2></div><div class="metrics-grid" id="metrics-grid" role="list" aria-label="Performance metrics"><div class="metric-chip"><span class="chip-label">Steps</span><span class="chip-value">0<span class="chip-suffix">/0</span></span></div><div class="metric-chip"><span class="chip-label">Actions</span><span class="chip-value">0</span></div><div class="metric-chip"><span class="chip-label">PII Types</span><span class="chip-value safe">0</span></div><div class="metric-chip"><span class="chip-label">Tokens</span><span class="chip-value">0</span></div><div class="metric-chip"><span class="chip-label">Latency</span><span class="chip-value safe">0ms</span></div></div></section>
+
+    <!-- Footer -->
+    <footer class="footer-nav" role="navigation" aria-label="Footer navigation"><span id="footer-status">Ready</span><div class="footer-separator" aria-hidden="true"></div><button type="button">Privacy</button><button type="button">Settings</button><button type="button">Help</button></footer>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="modal-container"><header class="modal-header"><h3 id="modal-title">Debug Data</h3><button class="modal-close" id="modal-close" aria-label="Close modal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></header><div class="modal-subtitle">Full sanitized context sent to planner</div><pre class="modal-json" id="modal-json"></pre><footer class="modal-footer"><span class="modal-badge">READ ONLY</span></footer></div>
+    </div>
+  </div>
+  <script type="module" src="popup.ts"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://privacy-vision-browser-agent/schemas/agent-action.schema.json",
+  "title": "AgentAction",
+  "type": "object",
+  "required": ["version", "action", "element_id", "confidence", "reasoning"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Protocol version"
+    },
+    "action": {
+      "type": "string",
+      "enum": ["click", "scroll", "select", "navigate", "wait", "finish"],
+      "description": "Allowed browser action"
+    },
+    "element_id": {
+      "type": "string",
+      "pattern": "^el_[a-zA-Z0-9]{8,}$",
+      "description": "Target element ID from sanitized context (required for click, select)"
+    },
+    "value": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Value for select/input actions (sanitized, no secrets)"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Target URL for navigate action"
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["up", "down", "left", "right"],
+      "description": "Scroll direction"
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10000,
+      "description": "Scroll amount in pixels"
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 30000,
+      "description": "Wait duration in milliseconds"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Model confidence in this action"
+    },
+    "reasoning": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Brief reasoning for the action"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional action metadata",
+      "additionalProperties": true,
+      "maxProperties": 10
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": { "properties": { "action": { "const": "click" } } },
+      "then": { "required": ["element_id"] }
+    },
+    {
+      "if": { "properties": { "action": { "const": "select" } } },
+      "then": { "required": ["element_id", "value"] }
+    },
+    {
+      "if": { "properties": { "action": { "const": "navigate" } } },
+      "then": { "required": ["url"] }
+    },
+    {
+      "if": { "properties": { "action": { "const": "scroll" } } },
+      "then": { "required": ["direction"] }
+    },
+    {
+      "if": { "properties": { "action": { "const": "wait" } } },
+      "then": { "required": ["duration_ms"] }
+    },
+    {
+      "if": { "properties": { "action": { "const": "finish" } } },
+      "then": { "not": { "required": ["element_id"] } }
+    }
+  ]
+}

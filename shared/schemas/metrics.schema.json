@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://privacy-vision-browser-agent/schemas/metrics.schema.json",
+  "title": "Metrics",
+  "type": "object",
+  "required": ["version", "request_id", "session_id", "step", "latency_ms", "elements_count", "pii_detected"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Protocol version"
+    },
+    "request_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique request identifier"
+    },
+    "session_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Session identifier"
+    },
+    "step": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Step number in the current session"
+    },
+    "latency_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total latency for this step"
+    },
+    "elements_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 200,
+      "description": "Number of elements in sanitized context"
+    },
+    "pii_detected": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "PII instances detected in this step"
+    },
+    "action_taken": {
+      "type": "string",
+      "enum": ["click", "scroll", "select", "navigate", "wait", "finish", "none"],
+      "description": "Action executed"
+    },
+    "planner_backend": {
+      "type": "string",
+      "enum": ["api", "transformers"],
+      "description": "Planner backend used"
+    },
+    "planner_latency_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Planner inference latency"
+    },
+    "privacy_gate_latency_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Privacy gate processing latency"
+    },
+    "error": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Error message if any"
+    }
+  },
+  "additionalProperties": false
+}

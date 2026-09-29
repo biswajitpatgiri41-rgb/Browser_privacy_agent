@@ -1,0 +1,6 @@
+
+{
+	"name": "privacy-vision-browser-agent",
+	"private": true,
+	"workspaces": ["extension"]
+}

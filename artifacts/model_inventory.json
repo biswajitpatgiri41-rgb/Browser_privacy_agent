@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-09-29",
+  "artifacts": [
+    {
+      "type": "server_planner_lora",
+      "path": "models/planner-lora/Final_model",
+      "size_bytes": 73911172,
+      "format": "PEFT LoRA safetensors",
+      "valid": true,
+      "intended_runtime": "server Transformers + PEFT",
+      "source": "repository model artifact"
+    },
+    {
+      "type": "client_pii_ner",
+      "path": "extension/public/models/ner/model.onnx",
+      "size_bytes": 0,
+      "format": "ONNX placeholder removed",
+      "valid": false,
+      "intended_runtime": "ONNX Runtime Web",
+      "source": "previous generated placeholder"
+    },
+    {
+      "type": "client_ui_detector",
+      "path": "extension/public/models/ui-detector/yolov8n-ui.onnx",
+      "size_bytes": 0,
+      "format": "ONNX placeholder removed",
+      "valid": false,
+      "intended_runtime": "ONNX Runtime Web",
+      "source": "previous generated placeholder"
+    },
+    {
+      "type": "client_face_detector",
+      "path": "extension/public/models/face/face_detection.onnx",
+      "size_bytes": 0,
+      "format": "ONNX placeholder removed",
+      "valid": false,
+      "intended_runtime": "ONNX Runtime Web",
+      "source": "previous generated placeholder"
+    },
+    {
+      "type": "client_ocr",
+      "path": "extension/public/models/ocr",
+      "size_bytes": 0,
+      "format": "ONNX placeholders removed",
+      "valid": false,
+      "intended_runtime": "ONNX Runtime Web",
+      "source": "previous generated placeholders"
+    },
+    {
+      "type": "client_pii_ner_checkpoint",
+      "path": "/content/client_models/pii_ner/best",
+      "size_bytes": null,
+      "format": "Transformers checkpoint outside workspace",
+      "valid": false,
+      "intended_runtime": "conversion source for ONNX Runtime Web",
+      "source": "training notebook execution environment; not available in workspace"
+    }
+  ]
+}

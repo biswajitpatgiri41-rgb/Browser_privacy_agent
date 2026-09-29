@@ -1,0 +1,9 @@
+{
+  "verified": false,
+  "status": "NOT_EXECUTED",
+  "raw_person_present": null,
+  "raw_email_present": null,
+  "raw_phone_present": null,
+  "raw_password_present": null,
+  "reason": "No browser E2E harness or controlled Chrome network capture was available in this environment. Server-side raw-value regression tests pass separately."
+}

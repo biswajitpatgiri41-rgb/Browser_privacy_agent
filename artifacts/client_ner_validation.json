@@ -1,0 +1,61 @@
+{
+  "status": "BLOCKED",
+  "requirement": "Phase 2: recover/export client NER",
+  "checked_paths": [
+    {
+      "path": "C:\\Users\\LOQ\\Downloads\\Python_programs\\privacy-vision-browser-agent\\extension\\public\\models\\ner\\model.onnx",
+      "exists": false,
+      "is_file": false,
+      "has_nonzero_size": false
+    },
+    {
+      "path": "C:\\Users\\LOQ\\Downloads\\Python_programs\\privacy-vision-browser-agent\\extension\\public\\models\\ui-detector\\yolov8n-ui.onnx",
+      "exists": false,
+      "is_file": false,
+      "has_nonzero_size": false
+    },
+    {
+      "path": "C:\\Users\\LOQ\\Downloads\\Python_programs\\privacy-vision-browser-agent\\client_models\\pii_ner\\best",
+      "exists": false,
+      "is_file": false,
+      "has_nonzero_size": false
+    },
+    {
+      "path": "C:\\Users\\LOQ\\Downloads\\Python_programs\\privacy-vision-browser-agent\\client_models",
+      "exists": false,
+      "is_file": false,
+      "has_nonzero_size": false
+    },
+    {
+      "path": "C:\\Users\\LOQ\\Downloads\\Python_programs\\privacy-vision-browser-agent\\ml\\training\\pii_ner",
+      "exists": true,
+      "is_file": false,
+      "has_nonzero_size": false
+    },
+    {
+      "path": "C:\\Users\\LOQ\\Downloads\\Python_programs\\privacy-vision-browser-agent\\ml\\training\\ui_detection",
+      "exists": true,
+      "is_file": false,
+      "has_nonzero_size": false
+    },
+    {
+      "path": "C:\\Users\\LOQ\\Downloads\\Python_programs\\privacy-vision-browser-agent\\ml\\export",
+      "exists": true,
+      "is_file": false,
+      "has_nonzero_size": false
+    }
+  ],
+  "technical_cause": [
+    "The repo does not contain a valid exported NER ONNX model under extension/public/models/ner/model.onnx.",
+    "The training notebook references a checkpoint under /content/client_models/pii_ner/best, which is outside this workspace.",
+    "The export step in model_train/client_train.ipynb failed with an Optimum CLI argument error: 'unrecognized arguments: onnx --model ... --task token-classification ...'",
+    "Without the trained checkpoint or a valid ONNX export, browser-side NER inference cannot be verified in this environment."
+  ],
+  "validation": {
+    "onnx_exists": false,
+    "onnx_path": "C:\\Users\\LOQ\\Downloads\\Python_programs\\privacy-vision-browser-agent\\extension\\public\\models\\ner\\model.onnx",
+    "size_bytes": 0,
+    "source_reference": "model_train/client_train.ipynb"
+  },
+  "next_action": "Provide the actual trained checkpoint or export from a valid training environment into extension/public/models/ner/ and re-run validation."
+}
